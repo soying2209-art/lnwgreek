@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>สั่งซื้อ Inw Greek Yogurt</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        body {
+            font-family: 'Prompt', sans-serif;
+            background-color: #f7f5e8;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        /* Custom scrollbar for receipt */
+        .receipt-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+        .receipt-scroll::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+        .receipt-scroll::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        /* Radio Card Styles */
+        .radio-card-input:checked + .radio-card {
+            border-color: #ec4899;
+            background-color: #fdf2f8;
+            box-shadow: 0 4px 6px -1px rgba(236, 72, 153, 0.1), 0 2px 4px -1px rgba(236, 72, 153, 0.06);
+        }
+        .radio-card-input:checked + .radio-card .check-icon {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Checkbox Custom Styles */
+        .custom-checkbox {
+            accent-color: #ec4899;
+            width: 1.25rem;
+            height: 1.25rem;
+            border-radius: 0.25rem;
+        }
+
+        /* Toast Animation */
+        @keyframes slideUp {
+            from { transform: translateY(100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+        .toast-enter { animation: slideUp 0.3s ease-out forwards; }
+        .toast-exit { animation: fadeOut 0.3s ease-in forwards; }
+    </style>
+</head>
+<body class="pb-28">
+
+    <div class="max-w-md mx-auto bg-white min-h-screen shadow-md relative">
+        
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-pink-500 to-rose-400 p-6 text-center text-white rounded-b-3xl shadow-sm">
+            <h1 class="text-3xl font-bold tracking-wide mb-1">Inw Greek</h1>
+            <p class="text-pink-100 text-sm font-medium">Greek Yogurt Homemade 🍓🥑</p>
+            <div class="mt-4 flex justify-center gap-2 text-xs font-semibold">
+                <span class="bg-white/20 px-3 py-1 rounded-full backdrop-blur-sm">ฟรี! น้ำผึ้ง & แครกเกอร์</span>
+                <span class="bg-white/20 px-3 py-1 rounded-full backdrop-blur-sm">Free Delivery 🚚</span>
+            </div>
+        </div>
+
+        <div class="p-5 space-y-6">
+            
+            <!-- Step 1: Select Set -->
+            <section>
+                <div class="flex items-center gap-2 mb-3">
+                    <div class="bg-pink-100 text-pink-600 w-6 h-6 rounded-full flex items-center justify-center font-bold text-sm">1</div>
+                    <h2 class="text-lg font-bold text-gray-800">เลือกเซตกรีกโยเกิร์ต</h2>
+                </div>
+                
+                <div class="grid grid-cols-1 gap-3">
+                    <!-- Option 1 -->
+                    <label class="cursor-pointer relative">
+                        <input type="radio" name="baseSet" value="plain" class="radio-card-input sr-only" checked onchange="handleSetChange()">
+                        <div class="radio-card border-2 border-gray-100 rounded-xl p-4 transition-all duration-200 flex items-center justify-between">
+                            <div>
+                                <h3 class="font-bold text-gray-800 text-base">Inw Greek ถ้วยเดี่ยว</h3>
+                                <p class="text-xs text-gray-500 mt-1">โยเกิร์ตเพียว (เลือกท็อปปิ้งเพิ่มเองได้)</p>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <span class="font-bold text-pink-600 text-lg">39.-</span>
+                                <i class="ph-fill ph-check-circle text-pink-500 text-xl opacity-0 scale-50 transition-all duration-200 check-icon"></i>
+                            </div>
+                        </div>
+                    </label>
+
+                    <!-- Option 2 -->
+                    <label class="cursor-pointer relative">
+                        <input type="radio" name="baseSet" value="duo" class="radio-card-input sr-only" onchange="handleSetChange()">
+                        <div class="radio-card border-2 border-gray-100 rounded-xl p-4 transition-all duration-200 flex items-center justify-between">
+                            <div>
+                                <h3 class="font-bold text-gray-800 text-base">Inw Duo</h3>
+                                <p class="text-xs text-blue-600 font-medium bg-blue-50 inline-block px-2 py-0.5 rounded mt-1">ฟรีท็อปปิ้ง: 15฿ (1) | 10฿ (1)</p>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <span class="font-bold text-pink-600 text-lg">49.-</span>
+                                <i class="ph-fill ph-check-circle text-pink-500 text-xl opacity-0 scale-50 transition-all duration-200 check-icon"></i>
+                            </div>
+                        </div>
+                    </label>
+
+                    <!-- Option 3 -->
+                    <label class="cursor-pointer relative">
+                        <input type="radio" name="baseSet" value="trio" class="radio-card-input sr-only" onchange="handleSetChange()">
+                        <div class="radio-card border-2 border-gray-100 rounded-xl p-4 transition-all duration-200 flex items-center justify-between">
+                            <div>
+                                <h3 class="font-bold text-gray-800 text-base">Inw Trio</h3>
+                                <p class="text-xs text-green-600 font-medium bg-green-50 inline-block px-2 py-0.5 rounded mt-1">ฟรีท็อปปิ้ง: 15฿ (1) | 10฿ (2)</p>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <span class="font-bold text-pink-600 text-lg">59.-</span>
+                                <i class="ph-fill ph-check-circle text-pink-500 text-xl opacity-0 scale-50 transition-all duration-200 check-icon"></i>
+                            </div>
+                        </div>
+                    </label>
+
+                    <!-- Option 4 -->
+                    <label class="cursor-pointer relative">
+                        <input type="radio" name="baseSet" value="maha" class="radio-card-input sr-only" onchange="handleSetChange()">
+                        <div class="radio-card border-2 border-gray-100 rounded-xl p-4 transition-all duration-200 flex items-center justify-between">
+                            <div>
+                                <h3 class="font-bold text-gray-800 text-base">Maha Inw</h3>
+                                <p class="text-xs text-amber-600 font-medium bg-amber-50 inline-block px-2 py-0.5 rounded mt-1">ฟรีท็อปปิ้ง: 15฿ (2) | 10฿ (1)</p>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <span class="font-bold text-pink-600 text-lg">69.-</span>
+                                <i class="ph-fill ph-check-circle text-pink-500 text-xl opacity-0 scale-50 transition-all duration-200 check-icon"></i>
+                            </div>
+                        </div>
+                    </label>
+                </div>
+            </section>
+
+            <!-- Step 2: Set Toppings (Dynamic) -->
+            <section id="section-set-toppings" class="hidden">
+                <div class="flex items-center gap-2 mb-3">
+                    <div class="bg-pink-100 text-pink-600 w-6 h-6 rounded-full flex items-center justify-center font-bold text-sm">2</div>
+                    <h2 class="text-lg font-bold text-gray-800">เลือกท็อปปิ้งในเซต</h2>
+                </div>
+                <div id="dynamic-topping-container" class="bg-gray-50 p-4 rounded-xl border border-gray-200 space-y-3">
+                    <!-- Javascript will inject selects here -->
+                </div>
+            </section>
+
+            <hr class="border-gray-200">
+
+            <!-- Step 3: Extra Toppings -->
+            <section>
+                <div class="flex items-center gap-2 mb-3">
+                    <div class="bg-gray-200 text-gray-600 w-6 h-6 rounded-full flex items-center justify-center font-bold text-sm">+</div>
+                    <h2 class="text-lg font-bold text-gray-800">เพิ่มท็อปปิ้งพิเศษ <span class="text-sm font-normal text-gray-500">(ถ้าต้องการ)</span></h2>
+                </div>
+                
+                <div class="space-y-4">
+                    <!-- 15 Baht Extras -->
+                    <div>
+                        <h4 class="text-sm font-semibold text-rose-500 mb-2 flex items-center gap-1"><i class="ph-fill ph-sparkle"></i> หมวด 15 บาท (+15.-)</h4>
+                        <div class="grid grid-cols-2 gap-2">
+                            <label class="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-50 cursor-pointer border border-transparent hover:border-gray-200 transition-colors">
+                                <input type="checkbox" class="custom-checkbox extra-item" data-name="อะโวคาโด" data-price="15" onchange="updateLiveTotal()">
+                                <span class="text-sm text-gray-700">อะโวคาโด</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-50 cursor-pointer border border-transparent hover:border-gray-200 transition-colors">
+                                <input type="checkbox" class="custom-checkbox extra-item" data-name="สตรอว์เบอร์รี่" data-price="15" onchange="updateLiveTotal()">
+                                <span class="text-sm text-gray-700">สตรอว์เบอร์รี่</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-50 cursor-pointer border border-transparent hover:border-gray-200 transition-colors">
+                                <input type="checkbox" class="custom-checkbox extra-item" data-name="บลูเบอร์รี่" data-price="15" onchange="updateLiveTotal()">
+                                <span class="text-sm text-gray-700">บลูเบอร์รี่</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-50 cursor-pointer border border-transparent hover:border-gray-200 transition-colors">
+                                <input type="checkbox" class="custom-checkbox extra-item" data-name="กีวี่" data-price="15" onchange="updateLiveTotal()">
+                                <span class="text-sm text-gray-700">กีวี่</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- 10 Baht Extras -->
+                    <div>
+                        <h4 class="text-sm font-semibold text-amber-500 mb-2 flex items-center gap-1"><i class="ph-fill ph-cookie"></i> หมวด 10 บาท (+10.-)</h4>
+                        <div class="grid grid-cols-2 gap-2">
+                            <label class="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-50 cursor-pointer border border-transparent hover:border-gray-200 transition-colors">
+                                <input type="checkbox" class="custom-checkbox extra-item" data-name="กราโนล่า" data-price="10" onchange="updateLiveTotal()">
+                                <span class="text-sm text-gray-700">กราโนล่า</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-50 cursor-pointer border border-transparent hover:border-gray-200 transition-colors">
+                                <input type="checkbox" class="custom-checkbox extra-item" data-name="องุ่นเคียวโฮ" data-price="10" onchange="updateLiveTotal()">
+                                <span class="text-sm text-gray-700">องุ่นเคียวโฮ</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-50 cursor-pointer border border-transparent hover:border-gray-200 transition-colors">
+                                <input type="checkbox" class="custom-checkbox extra-item" data-name="แอปเปิ้ล" data-price="10" onchange="updateLiveTotal()">
+                                <span class="text-sm text-gray-700">แอปเปิ้ล</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-50 cursor-pointer border border-transparent hover:border-gray-200 transition-colors">
+                                <input type="checkbox" class="custom-checkbox extra-item" data-name="มะม่วง" data-price="10" onchange="updateLiveTotal()">
+                                <span class="text-sm text-gray-700">มะม่วง</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-50 cursor-pointer border border-transparent hover:border-gray-200 transition-colors">
+                                <input type="checkbox" class="custom-checkbox extra-item" data-name="บิสคอฟ" data-price="10" onchange="updateLiveTotal()">
+                                <span class="text-sm text-gray-700">บิสคอฟ</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-50 cursor-pointer border border-transparent hover:border-gray-200 transition-colors">
+                                <input type="checkbox" class="custom-checkbox extra-item" data-name="โอริโอ้" data-price="10" onchange="updateLiveTotal()">
+                                <span class="text-sm text-gray-700">โอริโอ้</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-50 cursor-pointer border border-transparent hover:border-gray-200 transition-colors">
+                                <input type="checkbox" class="custom-checkbox extra-item" data-name="กล้วย" data-price="10" onchange="updateLiveTotal()">
+                                <span class="text-sm text-gray-700">กล้วย</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-50 cursor-pointer border border-transparent hover:border-gray-200 transition-colors">
+                                <input type="checkbox" class="custom-checkbox extra-item" data-name="แครกเกอร์" data-price="10" onchange="updateLiveTotal()">
+                                <span class="text-sm text-gray-700">แครกเกอร์</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <hr class="border-gray-200">
+
+            <!-- Step 4: Sauces & Scoop -->
+            <section>
+                <div class="flex items-center gap-2 mb-3">
+                    <div class="bg-gray-200 text-gray-600 w-6 h-6 rounded-full flex items-center justify-center font-bold text-sm">+</div>
+                    <h2 class="text-lg font-bold text-gray-800">เพิ่มเติม (ซอส / ขนาด)</h2>
+                </div>
+                
+                <div class="space-y-2">
+                    <label class="flex items-center justify-between p-3 bg-white border border-gray-200 rounded-xl hover:border-pink-300 cursor-pointer transition-colors">
+                        <div class="flex items-center gap-3">
+                            <input type="checkbox" class="custom-checkbox extra-item" data-name="เพิ่มซอสน้ำผึ้ง" data-price="10" onchange="updateLiveTotal()">
+                            <span class="text-sm font-medium text-gray-700">ซอสน้ำผึ้ง (Honey)</span>
+                        </div>
+                        <span class="text-sm font-bold text-gray-500">+10.-</span>
+                    </label>
+                    <label class="flex items-center justify-between p-3 bg-white border border-gray-200 rounded-xl hover:border-pink-300 cursor-pointer transition-colors">
+                        <div class="flex items-center gap-3">
+                            <input type="checkbox" class="custom-checkbox extra-item" data-name="เพิ่มซอสคาราเมล" data-price="10" onchange="updateLiveTotal()">
+                            <span class="text-sm font-medium text-gray-700">ซอสคาราเมล (Caramel)</span>
+                        </div>
+                        <span class="text-sm font-bold text-gray-500">+10.-</span>
+                    </label>
+                    <label class="flex items-center justify-between p-3 bg-white border border-gray-200 rounded-xl hover:border-pink-300 cursor-pointer transition-colors">
+                        <div class="flex items-center gap-3">
+                            <input type="checkbox" class="custom-checkbox extra-item" data-name="เพิ่มสกู๊ป (70g)" data-price="25" onchange="updateLiveTotal()">
+                            <span class="text-sm font-medium text-gray-700">เพิ่มสกู๊ปโยเกิร์ต (70g)</span>
+                        </div>
+                        <span class="text-sm font-bold text-pink-600">+25.-</span>
+                    </label>
+                </div>
+            </section>
+        </div>
+
+        <!-- Sticky Bottom Bar -->
+        <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] z-40 max-w-md mx-auto">
+            <div class="flex justify-between items-center mb-3">
+                <span class="text-gray-500 font-medium text-sm">ยอดรวมชำระ</span>
+                <div class="text-2xl font-bold text-pink-600"><span id="live-total">39</span> ฿</div>
+            </div>
+            <button onclick="handleCheckout()" class="w-full bg-pink-500 hover:bg-pink-600 text-white font-bold py-3.5 px-4 rounded-xl flex items-center justify-center gap-2 transition-colors shadow-sm">
+                <i class="ph-bold ph-receipt text-xl"></i> ตรวจสอบบิลและคัดลอก
+            </button>
+        </div>
+
+    </div>
+
+    <!-- Receipt Modal Overlay -->
+    <div id="receipt-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex-col justify-end sm:justify-center items-center">
+        <div class="bg-white w-full max-w-md rounded-t-2xl sm:rounded-2xl p-6 transform transition-transform translate-y-full sm:translate-y-0" id="receipt-content">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-gray-800 flex items-center gap-2"><i class="ph-fill ph-check-circle text-green-500"></i> สรุปรายการสั่งซื้อ</h3>
+                <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600 bg-gray-100 rounded-full p-1"><i class="ph-bold ph-x text-lg"></i></button>
+            </div>
+            
+            <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-5 max-h-[50vh] overflow-y-auto receipt-scroll">
+                <pre id="receipt-text-display" class="font-mono text-sm text-gray-700 whitespace-pre-wrap leading-relaxed"></pre>
+            </div>
+
+            <button onclick="copyAndClose()" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3.5 px-4 rounded-xl flex items-center justify-center gap-2 transition-colors">
+                <i class="ph-bold ph-copy text-xl"></i> คัดลอกส่งใน LINE
+            </button>
+            <p class="text-center text-xs text-gray-500 mt-3">คัดลอกแล้วนำไปวาง (Paste) ในแชทได้เลย</p>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed top-5 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-5 py-3 rounded-full shadow-lg z-[60] flex items-center gap-2 hidden">
+        <i class="ph-fill ph-info text-lg text-pink-400" id="toast-icon"></i>
+        <span id="toast-message" class="text-sm font-medium"></span>
+    </div>
+
+    <script>
+        // Data Configuration
+        const setConfig = {
+            'plain': { name: 'Inw Greek ถ้วยเดี่ยว', price: 39, req15: 0, req10: 0 },
+            'duo': { name: 'Inw Duo', price: 49, req15: 1, req10: 1 },
+            'trio': { name: 'Inw Trio', price: 59, req15: 1, req10: 2 },
+            'maha': { name: 'Maha Inw', price: 69, req15: 2, req10: 1 }
+        };
+
+        const toppings15 = ['อะโวคาโด', 'สตรอว์เบอร์รี่', 'บลูเบอร์รี่', 'กีวี่'];
+        const toppings10 = ['กราโนล่า', 'องุ่นเคียวโฮ', 'แอปเปิ้ล', 'มะม่วง', 'บิสคอฟ', 'โอริโอ้', 'กล้วย', 'แครกเกอร์'];
+
+        // Initial setup
+        document.addEventListener('DOMContentLoaded', () => {
+            handleSetChange();
+        });
+
+        function handleSetChange() {
+            const selectedValue = document.querySelector('input[name="baseSet"]:checked').value;
+            const config = setConfig[selectedValue];
+            const section = document.getElementById('section-set-toppings');
+            const container = document.getElementById('dynamic-topping-container');
+            
+            container.innerHTML = ''; // Clear previous
+
+            if (config.req15 === 0 && config.req10 === 0) {
+                section.classList.add('hidden');
+            } else {
+                section.classList.remove('hidden');
+                
+                // จัดกลุ่มตัวเลือกสำหรับโควตา 15฿ (เลือก 10฿ หรือ 15฿ ก็ได้)
+                const combinedFor15 = [
+                    { group: 'หมวด 15฿', items: toppings15 },
+                    { group: 'หมวด 10฿', items: toppings10 }
+                ];
+                
+                // จัดกลุ่มตัวเลือกสำหรับโควตา 10฿ (เลือกได้เฉพาะ 10฿)
+                const onlyFor10 = [
+                    { group: 'หมวด 10฿', items: toppings10 }
+                ];
+                
+                // Generate 15B Selects
+                for(let i=0; i<config.req15; i++) {
+                    container.appendChild(createSelectWrapper(`เลือกโควตาท็อปปิ้ง 15฿`, combinedFor15, `req-15-${i}`));
+                }
+                
+                // Generate 10B Selects
+                for(let i=0; i<config.req10; i++) {
+                    container.appendChild(createSelectWrapper(`เลือกโควตาท็อปปิ้ง 10฿`, onlyFor10, `req-10-${i}`));
+                }
+            }
+            updateLiveTotal();
+        }
+
+        function createSelectWrapper(label, optionsGrouped, id) {
+            const wrapper = document.createElement('div');
+            
+            let optionsHtml = `<option value="">-- ${label} --</option>`;
+            
+            // วนลูปสร้าง <optgroup> เพื่อให้แยกหมวดหมู่ชัดเจน
+            optionsGrouped.forEach(group => {
+                optionsHtml += `<optgroup label="${group.group}">`;
+                group.items.forEach(opt => {
+                    optionsHtml += `<option value="${opt}">${opt}</option>`;
+                });
+                optionsHtml += `</optgroup>`;
+            });
+
+            wrapper.innerHTML = `
+                <label class="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-1">
+                    <i class="ph-fill ph-caret-circle-right text-pink-400"></i> ${label} <span class="text-red-500">*</span>
+                </label>
+                <div class="relative">
+                    <select id="${id}" class="set-required-input appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2.5 px-4 pr-8 rounded-lg leading-tight focus:outline-none focus:border-pink-500 focus:ring-1 focus:ring-pink-500">
+                        ${optionsHtml}
+                    </select>
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-500">
+                        <i class="ph-bold ph-caret-down"></i>
+                    </div>
+                </div>
+            `;
+            return wrapper;
+        }
+
+        function updateLiveTotal() {
+            const selectedValue = document.querySelector('input[name="baseSet"]:checked').value;
+            let total = setConfig[selectedValue].price;
+
+            const extras = document.querySelectorAll('.extra-item:checked');
+            extras.forEach(item => {
+                total += parseInt(item.getAttribute('data-price'));
+            });
+
+            document.getElementById('live-total').innerText = total;
+        }
+
+        function generateReceiptString() {
+            const selectedValue = document.querySelector('input[name="baseSet"]:checked').value;
+            const config = setConfig[selectedValue];
+            let total = config.price;
+            
+            let receipt = `📝 รายการสั่งซื้อ Inw Greek\n`;
+            receipt += `=========================\n\n`;
+            receipt += `🍦 เซตที่เลือก: ${config.name} (${config.price}.-)\n`;
+
+            // Required Toppings
+            const requiredSelects = document.querySelectorAll('.set-required-input');
+            if(requiredSelects.length > 0) {
+                receipt += `\n✨ ท็อปปิ้งในเซต (ฟรี):\n`;
+                requiredSelects.forEach(select => {
+                    receipt += `   - ${select.value}\n`;
+                });
+            }
+
+            // Extras
+            const extras = document.querySelectorAll('.extra-item:checked');
+            if(extras.length > 0) {
+                receipt += `\n➕ เพิ่มเติมพิเศษ:\n`;
+                extras.forEach(item => {
+                    const name = item.getAttribute('data-name');
+                    const price = parseInt(item.getAttribute('data-price'));
+                    total += price;
+                    receipt += `   - ${name} (+${price}.-)\n`;
+                });
+            }
+
+            receipt += `\n=========================\n`;
+            receipt += `💰 ยอดชำระรวม: ${total} บาท\n`;
+            receipt += `=========================\n`;
+            receipt += `🎁 ฟรี! น้ำผึ้ง & แครกเกอร์ทุกออเดอร์\n`;
+            receipt += `🚚 ส่งฟรี (Free Delivery)`;
+
+            return receipt;
+        }
+
+        function handleCheckout() {
+            // Validate required selects
+            const requiredSelects = document.querySelectorAll('.set-required-input');
+            let isValid = true;
+            requiredSelects.forEach(select => {
+                if(!select.value) {
+                    isValid = false;
+                    select.classList.add('border-red-500', 'ring-1', 'ring-red-500');
+                    select.addEventListener('change', function() {
+                        this.classList.remove('border-red-500', 'ring-1', 'ring-red-500');
+                    }, {once:true});
+                }
+            });
+
+            if(!isValid) {
+                showToast('กรุณาเลือกท็อปปิ้งในเซตให้ครบถ้วนก่อนครับ', 'warning');
+                // Scroll to topping section
+                document.getElementById('section-set-toppings').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return;
+            }
+
+            // Show Modal with Receipt
+            const receiptStr = generateReceiptString();
+            document.getElementById('receipt-text-display').innerText = receiptStr;
+            
+            const modal = document.getElementById('receipt-modal');
+            const content = document.getElementById('receipt-content');
+            
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            
+            // Trigger animation
+            setTimeout(() => {
+                content.classList.remove('translate-y-full');
+            }, 10);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('receipt-modal');
+            const content = document.getElementById('receipt-content');
+            
+            content.classList.add('translate-y-full');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }, 300);
+        }
+
+        function copyAndClose() {
+            const text = document.getElementById('receipt-text-display').innerText;
+            
+            // Fallback for iFrame / Mobile Webview compatibility
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.top = "0";
+            textArea.style.left = "0";
+            textArea.style.position = "fixed";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+
+            try {
+                const successful = document.execCommand('copy');
+                if(successful) {
+                    closeModal();
+                    showToast('คัดลอกใบเสร็จแล้ว! วางในช่องแชท LINE ได้เลยครับ 🎉', 'success');
+                } else {
+                    showToast('ระบบไม่สามารถคัดลอกได้ กรุณาคัดลอกด้วยตัวเอง', 'error');
+                }
+            } catch (err) {
+                showToast('เกิดข้อผิดพลาด กรุณาคัดลอกด้วยตัวเอง', 'error');
+            }
+            document.body.removeChild(textArea);
+        }
+
+        let toastTimeout;
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            const msgEl = document.getElementById('toast-message');
+            const iconEl = document.getElementById('toast-icon');
+            
+            msgEl.innerText = message;
+            
+            if(type === 'success') {
+                iconEl.className = 'ph-fill ph-check-circle text-green-400 text-lg';
+            } else if(type === 'warning') {
+                iconEl.className = 'ph-fill ph-warning-circle text-amber-400 text-lg';
+            } else {
+                iconEl.className = 'ph-fill ph-info text-pink-400 text-lg';
+            }
+
+            toast.classList.remove('hidden', 'toast-exit');
+            toast.classList.add('toast-enter');
+
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('toast-enter');
+                toast.classList.add('toast-exit');
+                setTimeout(() => toast.classList.add('hidden'), 300);
+            }, 3500);
+        }
+    </script>
+</body>
+</html>
